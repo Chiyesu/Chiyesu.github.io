@@ -1,5 +1,6 @@
 import { Object3D } from "@/components/ui/Object3D";
 import { about, site } from "@/content/site";
+import { Coursework } from "./Coursework";
 import { StackNetwork } from "./StackNetwork";
 
 export function About() {
@@ -33,6 +34,7 @@ export function About() {
           <p className="display max-w-4xl text-3xl !leading-[1.15] md:text-5xl">&ldquo;{site.philosophy}&rdquo;</p>
         </blockquote>
       </div>
+      <Coursework />
       <StackNetwork />
     </section>
   );

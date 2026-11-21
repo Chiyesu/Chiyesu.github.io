@@ -136,8 +136,8 @@ export function StackNetwork() {
     <div ref={root} className="relative mt-24 md:mt-32" style={{ height: `${STORY_SVH + FINALE_SVH + 100}svh` }}>
       <div ref={pinned} className="sticky top-0 h-svh overflow-hidden pb-4 pt-[4.75rem] lg:pb-8 lg:pt-24">
         <div aria-hidden ref={stage} className="absolute" />
-        <div aria-hidden ref={barTop} className="absolute inset-x-0 top-0 z-20 h-[11svh] origin-top scale-y-0 border-b border-white/15 bg-black" />
-        <div aria-hidden ref={barBottom} className="absolute inset-x-0 bottom-0 z-20 h-[11svh] origin-bottom scale-y-0 border-t border-white/15 bg-black" />
+        <div aria-hidden ref={barTop} style={{ transform: "scaleY(0)" }} className="absolute inset-x-0 top-0 z-20 h-[11svh] origin-top border-b border-white/15 bg-black" />
+        <div aria-hidden ref={barBottom} style={{ transform: "scaleY(0)" }} className="absolute inset-x-0 bottom-0 z-20 h-[11svh] origin-bottom border-t border-white/15 bg-black" />
         <p
           ref={caption}
           aria-hidden

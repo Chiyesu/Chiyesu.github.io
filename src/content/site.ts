@@ -15,7 +15,7 @@ export const site: SiteConfig = {
   availability: { visible: true, status: "on-request" },
   // Replace each null with your real value. Empty links render as "To be added".
   links: {
-    github: null,
+    github: "https://github.com/Chiyesu",
     linkedin: null,
     email: null,
     cv: null,
