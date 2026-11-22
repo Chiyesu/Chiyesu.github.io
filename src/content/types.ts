@@ -31,7 +31,7 @@ export interface ExpertiseArea {
 }
 
 export type ProjectStatus = "completed" | "in-development" | "prototype" | "concept";
-export type ProjectMotif = "learning" | "agents" | "pipeline" | "ledger";
+export type ProjectMotif = "commerce" | "learning" | "agents" | "pipeline" | "ledger";
 
 export interface ProjectMedia {
   /** Path in /public, for example "/projects/zitfuse/home.webp". */

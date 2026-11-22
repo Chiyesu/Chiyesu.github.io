@@ -22,6 +22,8 @@ export function Sculpture({ animated, shardCount }: SculptureProps) {
   const core = useRef<Mesh>(null);
   const ringA = useRef<Mesh>(null);
   const ringB = useRef<Mesh>(null);
+  const entry = useRef<Group>(null);
+  const frames = useRef(0);
   const drag = useRef({ active: false, lastX: 0, lastY: 0, vx: 0, vy: 0 });
   const invalidate = useThree((state) => state.invalidate);
 
@@ -74,6 +76,15 @@ export function Sculpture({ animated, shardCount }: SculptureProps) {
     rig.current.position.z = scroll * 2.6;
     rig.current.scale.setScalar(fit);
 
+    // It is drawn while still collapsed, so shaders are compiled before the splash reveals it.
+    frames.current += 1;
+    if (frames.current > 2) sceneState.loaded = true;
+    if (entry.current) {
+      const emerged = Math.max(sceneState.intro, 0.0001);
+      entry.current.scale.setScalar(emerged);
+      entry.current.rotation.set(0, (1 - emerged) * Math.PI * 3, (1 - emerged) * 0.9);
+    }
+
     if (!animated) return;
     const state = drag.current;
     spin.current.rotation.y += delta * 0.11 + state.vy;
@@ -97,6 +108,7 @@ export function Sculpture({ animated, shardCount }: SculptureProps) {
 
   return (
     <group ref={rig}>
+      <group ref={entry}>
       <Shards count={shardCount} animated={animated} />
       <group ref={spin}>
         <mesh geometry={ribbon.geometry}>
@@ -124,6 +136,7 @@ export function Sculpture({ animated, shardCount }: SculptureProps) {
       <mesh ref={ringB} geometry={b.geometry} rotation={b.rotation}>
         <meshStandardMaterial color="#8d95a0" metalness={1} roughness={0.35} />
       </mesh>
+      </group>
     </group>
   );
 }

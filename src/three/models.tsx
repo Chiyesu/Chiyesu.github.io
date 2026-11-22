@@ -163,6 +163,26 @@ function Agents() {
   );
 }
 
+/** A parcel at the centre of a delivery route. */
+function Commerce() {
+  const kit = useKit();
+  const parcels = useMemo(() => range(9).map((i): Vec3 => {
+    const angle = (i / 9) * TAU;
+    return [Math.cos(angle) * 1.95, 0, Math.sin(angle) * 1.95];
+  }), []);
+  return (
+    <group rotation={[0.42, -0.6, 0.06]}>
+      <RoundedBox args={[1.6, 1.25, 1.6]} radius={0.05} material={kit.dark} />
+      <P m="signal" position={[0, 0, 0]}><boxGeometry args={[1.63, 1.28, 0.2]} /></P>
+      <P m="signal" position={[0, 0, 0]}><boxGeometry args={[0.2, 1.28, 1.63]} /></P>
+      <P m="metal" position={[0.48, 0.2, 0.81]}><boxGeometry args={[0.42, 0.3, 0.02]} /></P>
+      <P m="metal" rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[1.95, 0.016, 8, 112]} /></P>
+      <P m="dark" rotation={[Math.PI / 2, 0.35, 0]}><torusGeometry args={[2.2, 0.01, 8, 112]} /></P>
+      <Scatter points={parcels} m="metal"><boxGeometry args={[0.2, 0.16, 0.2]} /></Scatter>
+    </group>
+  );
+}
+
 function Pipeline() {
   return (
     <group rotation={[0.3, -0.5, 0]}>
@@ -359,7 +379,7 @@ function Globe() {
 
 export const models: Record<ModelName, () => ReactNode> = {
   mobile: Mobile, backend: Backend, ai: Neural, cloud: Cloud, data: Data,
-  learning: Learning, agents: Agents, pipeline: Pipeline, ledger: Ledger,
+  commerce: Commerce, learning: Learning, agents: Agents, pipeline: Pipeline, ledger: Ledger,
   cluster: ClusterModel, gyroscope: Gyroscope, prism: Prism, helix: Helix, lattice: Lattice, portal: Portal,
   knot: Knot, temple: Temple, cap: Cap, links: Links, tower: Tower, globe: Globe,
 };

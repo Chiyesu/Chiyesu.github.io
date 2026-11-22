@@ -17,7 +17,8 @@ const QUERIES = ["(prefers-reduced-motion: reduce)", "(hover: hover) and (pointe
 let cached: Capabilities | null = null;
 let webgl: boolean | null = null;
 
-function supportsWebGL() {
+/** Creating a context is slow, so the answer is measured once and reused. */
+export function supportsWebGL() {
   if (webgl === null) {
     try {
       const canvas = document.createElement("canvas");

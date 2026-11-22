@@ -6,6 +6,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Preloader } from "@/components/layout/Preloader";
 import { SceneLayer } from "@/components/layout/SceneLayer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { Splash } from "@/components/layout/Splash";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -19,6 +20,12 @@ const serif = Instrument_Serif({
 const mono = JetBrains_Mono({ variable: "--font-jetbrains-mono", subsets: ["latin"] });
 
 const title = `${site.name} | ${site.role}`;
+
+/**
+ * Runs before first paint. The splash shows once per browser session on the home page.
+ * The timer only acts if the app never starts, so a failed script can't leave a visitor on the splash.
+ */
+const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&!location.hash&&!sessionStorage.getItem('frontier-splash')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('splash-first','splash-hold');history.scrollRestoration='manual';setTimeout(function(){if(!d.dataset.splashLive)d.classList.remove('splash-first','splash-hold')},25000)}}catch(e){}})()`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -42,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning className={`${sans.variable} ${serif.variable} ${mono.variable} antialiased`}>
       <body className="min-h-svh">
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
         <a
           href="#main"
           className="fixed left-4 top-4 z-[100] -translate-y-24 bg-mist px-4 py-2 text-sm text-void focus:translate-y-0"
@@ -50,6 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <Preloader />
+        <Splash />
         <Navigation />
         <main id="main">{children}</main>
         <Footer />

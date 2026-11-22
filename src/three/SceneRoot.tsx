@@ -30,6 +30,8 @@ export default function SceneRoot({ tier }: { tier: Exclude<RenderTier, "none"> 
       dpr={tier === "high" ? [1, 1.5] : [1, 1.2]}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: ACESFilmicToneMapping }}
       onCreated={({ gl }) => {
+        // Reading shader status forces the browser to finish compiling on the main thread.
+        gl.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
         gl.domElement.addEventListener("webglcontextlost", () => setLost(true), { once: true });
       }}
     >

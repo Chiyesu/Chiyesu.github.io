@@ -7,7 +7,8 @@ import { expertise } from "@/content/expertise";
 import { useCapabilities } from "@/lib/capabilities";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { scrollToY } from "@/lib/lenis";
-import { DISSOLVE_SVH, smoothstep } from "@/lib/transition";
+import { useNearViewport } from "@/lib/loading";
+import { BRIDGE_IN_SVH, DISSOLVE_SVH, smoothstep } from "@/lib/transition";
 import { expertiseState } from "@/three/expertiseState";
 import type { ModelName } from "@/three/modelNames";
 
@@ -66,6 +67,7 @@ export function ExpertiseOrbit() {
   const reduced = useReducedMotion();
   const { ready, tier, reducedMotion } = useCapabilities();
   const live = ready && tier !== "none";
+  const near = useNearViewport(root);
   const active = expertise[activeIndex];
 
   // Scroll is the source of truth, so every part of the transition can be scrubbed forwards and backwards.
@@ -114,7 +116,8 @@ export function ExpertiseOrbit() {
       trigger: root.current,
       // The first stretch of this section is spent dissolving in, so the areas start after it.
       start: () => `top+=${(window.innerHeight * DISSOLVE_SVH) / 100} top`,
-      end: "bottom bottom",
+      // The last stretch stays pinned underneath the warp as it fades in.
+      end: () => `bottom-=${(window.innerHeight * BRIDGE_IN_SVH) / 100} bottom`,
       onUpdate: sync,
       onRefresh: sync,
     });
@@ -150,7 +153,7 @@ export function ExpertiseOrbit() {
   };
 
   return (
-    <div ref={root} className="relative" style={{ height: `${COUNT * SCROLL_PER_AREA + 10 + DISSOLVE_SVH}svh` }}>
+    <div ref={root} className="relative" style={{ height: `${COUNT * SCROLL_PER_AREA + 10 + DISSOLVE_SVH + BRIDGE_IN_SVH}svh` }}>
       <div className="sticky top-0 flex h-svh flex-col overflow-hidden pb-5 pt-20 lg:pb-8 lg:pt-24">
         <div className="shell flex min-h-0 flex-1 flex-col">
           <div className="flex items-end justify-between gap-4">
@@ -183,7 +186,7 @@ export function ExpertiseOrbit() {
 
               <div ref={stage} aria-hidden className="absolute inset-0">
                 {live ? (
-                  <ExpertiseStage names={NAMES} animated={!reducedMotion} particles={tier === "high" ? 1400 : 600} track={stage} />
+                  near && <ExpertiseStage names={NAMES} animated={!reducedMotion} particles={tier === "high" ? 1400 : 600} track={stage} />
                 ) : (
                   <span className="display flex h-full items-center justify-center text-6xl text-signal md:text-8xl">{active.number}</span>
                 )}

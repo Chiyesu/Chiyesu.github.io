@@ -115,13 +115,17 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           )}
         </Block>
         <Block label="Technologies">
-          <ul className="flex flex-wrap gap-2">
-            {project.technologies.map((tech) => (
-              <li key={tech} className="border border-line px-3 py-1.5 font-mono text-sm text-mist">
-                {tech}
-              </li>
-            ))}
-          </ul>
+          {project.technologies.length > 0 ? (
+            <ul className="flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <li key={tech} className="border border-line px-3 py-1.5 font-mono text-sm text-mist">
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="pending">To be added</p>
+          )}
         </Block>
         <Block label="Technical approach">
           <p>{project.approachNote}</p>
@@ -152,7 +156,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         <Block label="Links">
           <div className="grid gap-3 text-base sm:grid-cols-2">
             <ExternalAction label="GitHub" href={project.links.github} />
-            <ExternalAction label="Live demonstration" href={project.links.live} />
+            <ExternalAction label="Live site" href={project.links.live} />
           </div>
         </Block>
       </div>

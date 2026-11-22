@@ -76,7 +76,24 @@ function Ledger() {
   );
 }
 
+/** Commerce: a parcel on a delivery route. */
+function Commerce() {
+  return (
+    <g fill="none">
+      <ellipse cx="400" cy="290" rx="290" ry="120" stroke={LINE} />
+      <path d="M400 150 L520 210 L400 270 L280 210Z" fill="rgb(127 211 232 / 0.14)" stroke={SIGNAL} />
+      <path d="M280 210 V340 L400 400 V270 M520 210 V340 L400 400" fill="#0f1115" stroke={SIGNAL} />
+      <path d="M340 180 L460 240 V275" stroke={SIGNAL} strokeWidth="2" />
+      {range(8).map((i) => {
+        const angle = (i / 8) * Math.PI * 2;
+        return <rect key={i} x={392 + Math.cos(angle) * 290} y={282 + Math.sin(angle) * 120} width="16" height="16" fill="#0f1115" stroke={i === 1 ? SIGNAL : LINE} />;
+      })}
+    </g>
+  );
+}
+
 const motifs: Record<ProjectMotif, () => ReactNode> = {
+  commerce: Commerce,
   learning: Learning,
   agents: Agents,
   pipeline: Pipeline,

@@ -37,6 +37,8 @@ export default function HeroScene({ tier, animated, active, onContextLost }: Her
       camera={{ position: [0, 0, 9], fov: 34, near: 0.1, far: 40 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: ACESFilmicToneMapping }}
       onCreated={({ gl }) => {
+        // Reading shader status forces the browser to finish compiling on the main thread.
+        gl.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
         gl.domElement.addEventListener("webglcontextlost", onContextLost, { once: true });
       }}
     >

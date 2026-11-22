@@ -7,6 +7,7 @@ import { CourseSymbol } from "@/components/ui/CourseSymbol";
 import { coursework } from "@/content/coursework";
 import { useCapabilities } from "@/lib/capabilities";
 import { ScrollTrigger } from "@/lib/gsap";
+import { useNearViewport } from "@/lib/loading";
 import { scrollToY } from "@/lib/lenis";
 import { smoothstep } from "@/lib/transition";
 import { courseState } from "@/three/courseState";
@@ -25,6 +26,7 @@ export function Coursework() {
   const { ready, tier, reducedMotion } = useCapabilities();
   const active = coursework[activeIndex];
   const live = ready && tier !== "none";
+  const near = useNearViewport(root);
 
   useEffect(() => {
     // Each course holds for the first half of its slice, then its particles flow into the next object.
@@ -60,7 +62,7 @@ export function Coursework() {
         <div className="shell grid h-full grid-rows-[minmax(0,1fr)_auto] gap-3 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:grid-rows-1 lg:gap-12">
           <div aria-hidden className="relative min-h-0">
             {live ? (
-              <CourseMorph shapes={SHAPES} animated={!reducedMotion} count={tier === "high" ? 7000 : 4000} size={tier === "high" ? 0.024 : 0.03} />
+              near && <CourseMorph shapes={SHAPES} animated={!reducedMotion} count={tier === "high" ? 7000 : 4000} size={tier === "high" ? 0.024 : 0.03} />
             ) : (
               <ul className="flex h-full flex-wrap content-center justify-center gap-2">
                 {coursework.map((course, index) => (

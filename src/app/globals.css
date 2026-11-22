@@ -139,6 +139,33 @@
   animation: preloader-bar 0.95s var(--ease-frontier) both;
 }
 
+/* First-visit splash. Hidden unless the boot script in the layout has switched it on. */
+.splash {
+  display: none;
+}
+
+html.splash-first .splash {
+  display: block;
+}
+
+html.splash-first .preloader {
+  display: none;
+}
+
+html.splash-first .enter,
+html.splash-first .enter-line {
+  animation-delay: calc(0.1s + var(--d, 0s));
+}
+
+html.splash-first .enter-fade {
+  animation: none;
+}
+
+html.splash-hold .enter,
+html.splash-hold .enter-line {
+  animation-play-state: paused;
+}
+
 /* Scroll reveals are hidden only once JavaScript has confirmed it can show them. */
 .js [data-reveal] {
   opacity: 0;

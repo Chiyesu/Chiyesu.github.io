@@ -10,6 +10,7 @@ import { getProject } from "@/content/projects";
 import { stack } from "@/content/stack";
 import { useCapabilities } from "@/lib/capabilities";
 import { ScrollTrigger } from "@/lib/gsap";
+import { useNearViewport } from "@/lib/loading";
 import { scrollToY } from "@/lib/lenis";
 import { DISSOLVE_SVH, FINALE_SVH, smoothstep } from "@/lib/transition";
 import { stackState } from "@/three/stackState";
@@ -50,6 +51,7 @@ export function StackNetwork() {
   const active = stack[activeIndex];
   const next = stack[activeIndex + 1];
   const live = ready && tier !== "none";
+  const near = useNearViewport(root);
 
   useEffect(() => {
     // Each node holds for the first half of its slice, then the link grows towards the next one.
@@ -203,9 +205,11 @@ export function StackNetwork() {
 
           <div ref={slot} aria-hidden className="relative order-1 min-h-0 lg:order-2">
             {live ? (
-              <NeuroLinkPortal target={stage}>
-                <NeuroLink stack={stack} animated={!reducedMotion} dustCount={tier === "high" ? 520 : 180} />
-              </NeuroLinkPortal>
+              near && (
+                <NeuroLinkPortal target={stage}>
+                  <NeuroLink stack={stack} animated={!reducedMotion} dustCount={tier === "high" ? 520 : 180} />
+                </NeuroLinkPortal>
+              )
             ) : (
               <ul className="flex h-full flex-wrap content-center justify-center gap-2">
                 {stack.map((node, index) => (

@@ -13,8 +13,40 @@ export const statusLabels: Record<ProjectStatus, string> = {
  */
 export const projects: Project[] = [
   {
-    slug: "zitfuse",
+    // Built end to end by Mashimbwa. Features come from the public site. Add the stack when ready.
+    slug: "electromove",
     number: "01",
+    title: "ElectroMove Solutions",
+    category: "E-commerce & Logistics",
+    status: "completed",
+    motif: "commerce",
+    summary:
+      "An online store and logistics platform helping customers in Zambia buy electronics, in stock or sourced and imported to specification.",
+    overview:
+      "ElectroMove Solutions connects product sourcing, electronics sales, logistics and engineering services in one website for customers across Zambia.",
+    problem: "Customers in Zambia can struggle to find specific electronics locally and to manage importing them.",
+    solution:
+      "A storefront for products in stock, a request flow for items that need sourcing, and order tracking from supplier to delivery.",
+    contributions: [
+      "Built the e-commerce platform from concept to deployment",
+      "Storefront with categories, search, deals, wishlist and cart",
+      "Sourcing request flow for exact models and specifications",
+      "Order tracking through to delivery",
+    ],
+    technologies: [],
+    approachNote: "The live site brings the customer journey together, from finding a product to tracking its delivery.",
+    architecture: [
+      { label: "Storefront", detail: "Product categories, search, deals, wishlist and cart" },
+      { label: "Sourcing requests", detail: "Customers request an exact model or specification" },
+      { label: "Order tracking", detail: "Follow an order through to delivery" },
+      { label: "Support", detail: "Help centre, delivery, returns and warranty information" },
+    ],
+    media: [],
+    links: { github: null, live: "https://electromove.net" },
+  },
+  {
+    slug: "zitfuse",
+    number: "02",
     title: "Zitfuse",
     category: "Educational Technology",
     status: null,
@@ -45,7 +77,7 @@ export const projects: Project[] = [
   },
   {
     slug: "cbu-ai-chatbot",
-    number: "02",
+    number: "03",
     title: "CBU AI Academic & Administrative Chatbot",
     category: "Artificial Intelligence",
     status: null,
@@ -72,7 +104,7 @@ export const projects: Project[] = [
   },
   {
     slug: "media-pipeline",
-    number: "03",
+    number: "04",
     title: "Educational Media Processing Pipeline",
     category: "Cloud Infrastructure & Automation",
     status: null,
@@ -97,7 +129,7 @@ export const projects: Project[] = [
   },
   {
     slug: "alterra",
-    number: "04",
+    number: "05",
     title: "Alterra",
     category: "Business Planning & Productivity",
     status: "concept",

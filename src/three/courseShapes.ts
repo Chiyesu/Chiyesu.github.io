@@ -75,7 +75,8 @@ const WORLD_SCALE = 0.185;
 const HALF_WIDTH = 0.1;
 const HALF_DEPTH = 0.25;
 const NODE_RADIUS = 0.24;
-const TABLE_STEP = 0.12;
+/** getPointAtLength is slow, so strokes are measured coarsely and interpolated when sampled. */
+const TABLE_STEP = 0.3;
 
 interface Traced {
   /** x, y, tangent x and tangent y per step, in world units. */
@@ -95,14 +96,18 @@ function traceStrokes(strokes: SymbolStroke[], host: SVGSVGElement): Traced[] {
     const steps = Math.max(2, Math.ceil(total / TABLE_STEP));
     const table = new Float32Array(steps * 4);
     for (let i = 0; i < steps; i += 1) {
-      const at = (i / (steps - 1)) * total;
-      const point = path.getPointAtLength(at);
-      const ahead = path.getPointAtLength(Math.min(total, at + 0.05));
-      const behind = path.getPointAtLength(Math.max(0, at - 0.05));
-      const tx = ahead.x - behind.x;
-      const ty = -(ahead.y - behind.y);
+      const point = path.getPointAtLength((i / (steps - 1)) * total);
+      table[i * 4] = (point.x - 12) * WORLD_SCALE;
+      table[i * 4 + 1] = -(point.y - 12) * WORLD_SCALE;
+    }
+    for (let i = 0; i < steps; i += 1) {
+      const ahead = Math.min(steps - 1, i + 1) * 4;
+      const behind = Math.max(0, i - 1) * 4;
+      const tx = table[ahead] - table[behind];
+      const ty = table[ahead + 1] - table[behind + 1];
       const size = Math.hypot(tx, ty) || 1;
-      table.set([(point.x - 12) * WORLD_SCALE, -(point.y - 12) * WORLD_SCALE, tx / size, ty / size], i * 4);
+      table[i * 4 + 2] = tx / size;
+      table[i * 4 + 3] = ty / size;
     }
     path.remove();
     return { table, steps, length: total, accent: accent ? 1 : 0 };
@@ -111,9 +116,11 @@ function traceStrokes(strokes: SymbolStroke[], host: SVGSVGElement): Traced[] {
 
 /** Places one particle on the surface of the thick, extruded stroke. */
 function sampleStroke(stroke: Traced, random: () => number, out: Float32Array, offset: number) {
-  const index = Math.min(stroke.steps - 1, Math.floor(random() * stroke.steps));
-  const x = stroke.table[index * 4];
-  const y = stroke.table[index * 4 + 1];
+  const along = random() * (stroke.steps - 1);
+  const index = Math.min(stroke.steps - 2, Math.floor(along));
+  const blend = along - index;
+  const x = stroke.table[index * 4] + (stroke.table[index * 4 + 4] - stroke.table[index * 4]) * blend;
+  const y = stroke.table[index * 4 + 1] + (stroke.table[index * 4 + 5] - stroke.table[index * 4 + 1]) * blend;
   const tx = stroke.table[index * 4 + 2];
   const ty = stroke.table[index * 4 + 3];
   const angle = random() * Math.PI * 2;
@@ -139,18 +146,30 @@ function sampleNode(node: [number, number], random: () => number, out: Float32Ar
   out[offset + 3] = 1;
 }
 
-/** Packs every symbol into one float texture: one column per particle, one row per symbol. */
-export function buildTargets(shapes: CourseShape[], count: number) {
-  const data = new Float32Array(count * shapes.length * 4);
+const traces = new Map<CourseShape, Traced[]>();
+
+/** Measures a symbol once. The page warms this cache while idle, so the section opens without a pause. */
+export function traceShape(shape: CourseShape) {
+  const cached = traces.get(shape);
+  if (cached) return cached;
   const host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   host.setAttribute("aria-hidden", "true");
   host.style.cssText = "position:absolute;width:0;height:0;visibility:hidden";
   document.body.appendChild(host);
+  const traced = traceStrokes(SYMBOLS[shape].strokes, host);
+  host.remove();
+  traces.set(shape, traced);
+  return traced;
+}
+
+/** Packs every symbol into one float texture: one column per particle, one row per symbol. */
+export function buildTargets(shapes: CourseShape[], count: number) {
+  const data = new Float32Array(count * shapes.length * 4);
 
   shapes.forEach((shape, row) => {
     const random = seeded(7919 + row * 613);
-    const { strokes, nodes = [] } = SYMBOLS[shape];
-    const traced = traceStrokes(strokes, host);
+    const { nodes = [] } = SYMBOLS[shape];
+    const traced = traceShape(shape);
     const totalLength = traced.reduce((sum, stroke) => sum + stroke.length, 0);
     const nodeCount = nodes.length > 0 ? Math.floor(count * 0.1) : 0;
 
@@ -167,6 +186,5 @@ export function buildTargets(shapes: CourseShape[], count: number) {
     }
   });
 
-  host.remove();
   return data;
 }

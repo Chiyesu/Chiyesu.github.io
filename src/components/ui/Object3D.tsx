@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useRef, type ReactNode } from "react";
 import { useCapabilities } from "@/lib/capabilities";
+import { useNearViewport } from "@/lib/loading";
 import type { ModelName } from "@/three/modelNames";
 
 const ViewStage = dynamic(() => import("@/three/ViewStage"), { ssr: false });
@@ -18,7 +19,8 @@ interface Object3DProps {
 export function Object3D({ name, className = "", fallback }: Object3DProps) {
   const { ready, tier, reducedMotion } = useCapabilities();
   const track = useRef<HTMLDivElement>(null);
-  const live = ready && tier !== "none";
+  const near = useNearViewport(track);
+  const live = ready && tier !== "none" && near;
 
   return (
     <div ref={track} aria-hidden className={`relative ${className}`}>

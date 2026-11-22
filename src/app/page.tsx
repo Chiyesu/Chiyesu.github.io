@@ -6,6 +6,7 @@ import { Expertise } from "@/components/sections/Expertise";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
 import { Thinking } from "@/components/sections/Thinking";
+import { WorkBridge } from "@/components/sections/WorkBridge";
 import { site } from "@/content/site";
 
 export default function HomePage() {
@@ -29,6 +30,7 @@ export default function HomePage() {
       <Hero />
       <About />
       <Expertise />
+      <WorkBridge />
       <Projects />
       <Experience />
       <Thinking />

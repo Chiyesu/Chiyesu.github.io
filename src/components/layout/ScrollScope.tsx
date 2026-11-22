@@ -42,12 +42,15 @@ export function ScrollScope({ children }: { children: ReactNode }) {
     });
     media.add(`${MOTION_OK} and (min-width: 1024px)`, () => {
       const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-stack]"));
-      panels.slice(0, -1).forEach((panel, index) => {
+      panels.slice(0, -1).forEach((panel) => {
+        // The outgoing card tips back into the screen as the shutter closes over it.
         gsap.to(panel.querySelector("[data-stack-card]"), {
-          scale: 0.94,
-          opacity: 0.35,
+          scale: 0.9,
+          rotationX: 9,
+          transformPerspective: 1300,
+          opacity: 0.25,
           ease: "none",
-          scrollTrigger: { trigger: panels[index + 1], start: "top bottom", end: "top top", scrub: true },
+          scrollTrigger: { trigger: panel.nextElementSibling, start: "top bottom", end: "top 55%", scrub: true },
         });
       });
     });

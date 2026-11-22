@@ -132,7 +132,7 @@ function Scene({ names, animated, particles, track }: SceneProps) {
     const delta = Math.min(rawDelta, 0.05);
     const element = track.current;
     if (!root.current || !element) return;
-    const gate = Number(element.closest<HTMLElement>("[data-scene-gate]")?.dataset.sceneGate ?? 1);
+    const gate = Number(element.closest<HTMLElement>("[data-scene-gate]")?.dataset.sceneGate ?? 1) * expertiseState.exit;
     root.current.visible = gate > 0.01;
     root.current.scale.setScalar(Math.max(gate, 0.0001));
     if (!root.current.visible) return;

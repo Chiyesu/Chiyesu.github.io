@@ -3,7 +3,7 @@ export type ModelName =
   // Expertise
   | "mobile" | "backend" | "ai" | "cloud" | "data"
   // Projects
-  | "learning" | "agents" | "pipeline" | "ledger"
+  | "commerce" | "learning" | "agents" | "pipeline" | "ledger"
   // About, Experience and Contact
   | "cluster" | "gyroscope" | "prism" | "helix" | "lattice" | "portal"
   // Thinking
