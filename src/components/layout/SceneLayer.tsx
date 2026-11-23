@@ -15,7 +15,6 @@ const BACKGROUND_TASKS: (() => unknown)[] = [
   () => import("@/three/CourseMorph"),
   () => import("@/three/ExpertiseStage"),
   () => import("@/three/WarpScene"),
-  () => import("@/three/TransitScene"),
   ...coursework.map((course) => async () => (await import("@/three/courseShapes")).traceShape(course.shape)),
 ];
 

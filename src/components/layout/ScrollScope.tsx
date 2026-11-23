@@ -40,19 +40,25 @@ export function ScrollScope({ children }: { children: ReactNode }) {
         );
       });
     });
-    media.add(`${MOTION_OK} and (min-width: 1024px)`, () => {
-      const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-stack]"));
-      panels.slice(0, -1).forEach((panel) => {
-        // The outgoing card tips back into the screen as the shutter closes over it.
-        gsap.to(panel.querySelector("[data-stack-card]"), {
-          scale: 0.9,
-          rotationX: 9,
-          transformPerspective: 1300,
-          opacity: 0.25,
-          ease: "none",
-          scrollTrigger: { trigger: panel.nextElementSibling, start: "top bottom", end: "top 55%", scrub: true },
-        });
+    media.add(MOTION_OK, () => {
+      // The first project keeps the section's gate, which holds it back until the warp has finished.
+      const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-stack]")).slice(1);
+      panels.forEach((panel) => {
+        const setGate = (self: ScrollTrigger) => {
+          panel.dataset.sceneGate = String(self.progress);
+        };
+        gsap.fromTo(
+          panel.querySelector("[data-stack-card]"),
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: "none",
+            scrollTrigger: { trigger: panel, start: "top 85%", end: "top 40%", scrub: true, onUpdate: setGate, onRefresh: setGate },
+          },
+        );
       });
+      return () => panels.forEach((panel) => delete panel.dataset.sceneGate);
     });
     ScrollTrigger.refresh();
 
