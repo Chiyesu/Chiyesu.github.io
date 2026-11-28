@@ -16,8 +16,8 @@ export const site: SiteConfig = {
   // Replace each null with your real value. Empty links render as "To be added".
   links: {
     github: "https://github.com/Chiyesu",
-    linkedin: null,
-    email: null,
+    linkedin: "https://www.linkedin.com/in/mashimbwa-chiyesu-403063272",
+    email: "chiyesu203@gmail.com",
     cv: null,
   },
 };
