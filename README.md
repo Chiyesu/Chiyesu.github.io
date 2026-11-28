@@ -31,7 +31,7 @@ The site is an interactive 3D experience where you can explore my expertise, pro
 Have an idea worth building? I'm always interested in meaningful projects, interesting collaborations and opportunities to create technology that makes a difference.
 
 - Email: [chiyesu203@gmail.com](mailto:chiyesu203@gmail.com)
-- LinkedIn: [Mashimbwa Chiyesu](https://www.linkedin.com/in/mashimbwa-chiyesu)
+- LinkedIn: [Mashimbwa Chiyesu](https://www.linkedin.com/in/mashimbwa-chiyesu-403063272)
 - GitHub: [@Chiyesu](https://github.com/Chiyesu)
 - Portfolio: [chiyesu.github.io](https://chiyesu.github.io)
 
