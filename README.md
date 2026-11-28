@@ -1,74 +1,40 @@
-# The Digital Frontier
+# Hi, I'm Mashimbwa Chiyesu
 
-The interactive 3D portfolio of Mashimbwa Chiyesu. Built with Next.js, TypeScript, Tailwind CSS, React Three Fiber, GSAP and Framer Motion. It has no backend or database.
+**Software Developer** · Building ideas into meaningful digital solutions.
 
-## Install and run
+I'm a Computer Science graduate who designs and develops digital experiences, intelligent systems and software solutions that connect people, processes and ideas. My work spans mobile application development, backend engineering, artificial intelligence, cloud infrastructure and digital transformation.
 
-Requires Node.js 20.9 or newer.
+I enjoy taking ideas from concept to implementation, and I'm especially interested in how technology can improve larger systems, institutional processes and access to digital services.
 
-```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run lint
-npm run build    # writes the static site to out/
-```
+## View my portfolio
 
-## Update personal information
+**[chiyesu.github.io](https://chiyesu.github.io)**
 
-Edit `src/content/site.ts`:
+The site is an interactive 3D experience where you can explore my expertise, projects and experience, including:
 
-- `links` holds your GitHub, LinkedIn, email and CV. Any `null` value displays as "To be added".
-- For the CV, put the file at `public/cv.pdf` and set `cv: "/cv.pdf"`.
-- `availability.status` can be `open`, `limited`, `unavailable` or `on-request`. Set `visible: false` to hide it.
+- **ElectroMove Solutions**
+- **Zitfuse**
+- **CBU AI Academic & Administrative Chatbot**
+- **Educational Media Processing Pipeline**
+- **Alterra**
 
-Other content is in `src/content/`: `expertise.ts`, `experience.ts` and `thinking.ts`.
+## What I work on
 
-## Update projects
+- Mobile Development
+- Backend Engineering
+- Artificial Intelligence
+- Cloud & Infrastructure
+- Data & Systems
 
-Edit `src/content/projects.ts`. Each entry generates a page at `/projects/<slug>`.
+## Get in touch
 
-- `status` can be `completed`, `in-development`, `prototype`, `concept` or `null`. No badge shows while it is `null`.
-- `contributions` and `links` display "To be added" while empty.
-- To add screenshots, place them in `public/projects/<slug>/` and add them to `media`:
+Have an idea worth building? I'm always interested in meaningful projects, interesting collaborations and opportunities to create technology that makes a difference.
 
-```ts
-media: [{ src: "/projects/zitfuse/home.webp", alt: "Zitfuse home screen", width: 1280, height: 800 }],
-```
+- Email: [chiyesu203@gmail.com](mailto:chiyesu203@gmail.com)
+- LinkedIn: [Mashimbwa Chiyesu](https://www.linkedin.com/in/mashimbwa-chiyesu)
+- GitHub: [@Chiyesu](https://github.com/Chiyesu)
+- Portfolio: [chiyesu.github.io](https://chiyesu.github.io)
 
-## Replace the 3D asset
+---
 
-The hero loads `public/models/frontier.glb`, which must contain mesh nodes named `Ribbon`, `Core`, `RingA` and `RingB`. Materials are applied in `src/three/Sculpture.tsx`.
-
-To regenerate the model, fallback poster and share image with Blender:
-
-```bash
-blender --background --factory-startup --python blender/build_sculpture.py -- public
-```
-
-To use a different model, export a Draco-compressed GLB with those node names, or update the node references in `Sculpture.tsx`.
-
-### Section objects
-
-Every other 3D object is procedural and lives in `src/three/models.tsx`. They all share one canvas. To add one, create the model, register it in `models`, add its name to `src/three/modelNames.ts`, and place it in any section:
-
-```tsx
-<Object3D name="globe" className="h-64 w-64" />
-```
-
-## Project structure
-
-```text
-blender/             Source script for the sculpture
-public/              Model, Draco decoder and images
-src/app/             Routes, metadata, sitemap and robots
-src/components/      Layout, page sections and project components
-src/content/         All editable content and its types
-src/lib/             Device capability detection and GSAP setup
-src/three/           3D scene, separate from the interface
-```
-
-## Deploy
-
-The site is hosted on GitHub Pages at https://chiyesu.github.io. Every push to `main` builds and publishes it through `.github/workflows/deploy.yml`.
-
-`npm run build` writes a static site to `out/`, so any static host can serve that folder. If the address changes, update `NEXT_PUBLIC_SITE_URL` in the workflow, because canonical links, the sitemap and social previews depend on it.
+<sub>This portfolio is built with Next.js, TypeScript, Tailwind CSS, React Three Fiber, GSAP and Framer Motion, and is deployed to GitHub Pages.</sub>
